@@ -1,0 +1,79 @@
+# Based on HumanCompatibleAI/eirli Dockerfile, but with the following changes:
+# - Update to cuda 11.0
+# - Remove requirements.txt and MineRL installations
+# - Remove X server display configuration
+# - Symlink mujoco200 to mujoco200_linux to work with both mujoco_py and dm_control
+# The Conda bits are based on https://hub.docker.com/r/continuumio/miniconda3/dockerfile
+FROM ubuntu:20.04
+
+RUN apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    curl \
+    git \
+    libgl1-mesa-dev \
+    libgl1-mesa-glx \
+    libglew-dev \
+    libosmesa6-dev \
+    software-properties-common \
+    net-tools \
+    unzip \
+    vim \
+    virtualenv \
+    wget \
+    xpra \
+    xserver-xorg-dev \
+    libxrandr2 \
+    libxss1 \
+    libxcursor1 \
+    libxcomposite1 \
+    libasound2 \
+    libxi6 \
+    libxtst6 \
+    libegl1-mesa \
+    xvfb \
+    rsync \
+    gcc \
+    g++ \
+    tmux \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+RUN curl -o /usr/local/bin/patchelf https://s3-us-west-2.amazonaws.com/openai-sci-artifacts/manual-builds/patchelf_0.9_amd64.elf \
+  && chmod +x /usr/local/bin/patchelf
+
+RUN mkdir -p /root/.mujoco \
+  && wget https://www.roboti.us/download/mujoco200_linux.zip -O mujoco.zip \
+  && unzip mujoco.zip -d /root/.mujoco \
+  && ln -s /root/.mujoco/mujoco200_linux /root/.mujoco/mujoco200 \
+  && rm mujoco.zip \
+  && wget https://roboti.us/file/mjkey.txt -O /root/.mujoco/mjkey.txt
+ENV LD_LIBRARY_PATH /root/.mujoco/mujoco200/bin:${LD_LIBRARY_PATH}
+
+# tini is a simple init which is used by the official Conda Dockerfile (among
+# other things). It can do stuff like reap zombie processes & forward signals
+# (e.g. from "docker stop") to subprocesses. This may be useful if the code
+# breaks in such a way that it creates lots of zombies or cannot easily be
+# killed (e.g. maybe a Python extension segfaults and doesn't wait on its
+# children, which keep running). That said, Sam hasn't yet run into a
+# situation where it was necessary with the il-representations code base, at
+# least as of October 2020.
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+
+# Install Conda and make it the default Python
+ENV PATH /opt/conda/bin:$PATH
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /root/conda.sh || true \
+  && bash /root/conda.sh -b -p /opt/conda || true \
+  && rm /root/conda.sh
+RUN conda update -n base -c defaults conda \
+  && conda install -c anaconda python=3.7 \
+  && conda clean -ay
+
+# Install CUDA for PyTorch
+RUN conda install -c anaconda cudatoolkit \
+  && conda install pytorch==1.7.1 cudatoolkit=11.0 -c pytorch
+
+# Always run under tini (see explanation above)
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
