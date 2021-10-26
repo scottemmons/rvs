@@ -1,6 +1,5 @@
 """Methods for interacting with the environments."""
 
-# TODO(scottemmons): replace typing imports with __future__ annotations
 from __future__ import annotations
 
 import os
