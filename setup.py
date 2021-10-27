@@ -41,7 +41,7 @@ setuptools.setup(
     package_dir={"": "src"},
     install_requires=[
         "configargparse",
-        "d4rl @ git+ssh://git@github.com/scottemmons/d4rl.git",
+        "d4rl @ git+ssh://git@github.com/rail-berkeley/d4rl.git",
         "dm_control<=0.0.4",  # so that dm_control uses mujoco200 along with mujoco_py
         "gcsl @ git+ssh://git@github.com/scottemmons/gcsl.git",
         "gym",
