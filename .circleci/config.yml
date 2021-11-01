@@ -1,0 +1,130 @@
+version: 2.1  # Version of CircleCI config format
+
+# "Orbs" are reusable packages of CircleCI config.
+# They can simplify common tasks, such as interacting with external services.
+# This section lists orbs this config uses.
+orbs:
+  codecov: codecov/codecov@1.1.0  # support for uploading code coverage to codecov
+
+defaults: &defaults
+  docker:
+    - image: scottemmons/rvs:base
+  working_directory: /rvs
+
+executors:
+  unit-test:
+    <<: *defaults
+    resource_class: large
+    environment:
+      # Don't use auto-detect since it sees all CPUs available, but container is throttled.
+      NUM_CPUS: 4
+  lintandtype:
+    <<: *defaults
+    resource_class: medium
+    environment:
+      # If you change these, also change ci/code_checks.sh
+      LINT_FILES: src/ tests/ setup.py  # files we lint
+      # Files we statically type check. Source files like src/ should almost always be present.
+      # In this repo we also typecheck tests/ -- but sometimes you may want to exclude these
+      # if they do strange things with types (e.g. mocking).
+      TYPECHECK_FILES: src/ tests/ setup.py
+      # Don't use auto-detect since it sees all CPUs available, but container is throttled.
+      NUM_CPUS: 2
+
+commands:
+  # Define common function to install dependencies and rvs, used in the jobs defined in the next section
+  dependencies:
+    description: "Check out and install Python dependencies."
+    steps:
+      - checkout  # Check out the code from Git
+      - run:
+            name: Install with test requirements
+            command: pip install .[test]
+
+# The `jobs` section defines jobs that can be executed on CircleCI as part of workflows.
+jobs:
+  # `lintandtype` installs dependencies + `rvs`, lints the code, and runs type checks.
+  lintandtype:
+    executor: lintandtype
+
+    steps:
+      - dependencies
+      - run:
+          name: flake8
+          command: flake8 ${LINT_FILES}
+
+      - run:
+          name: black
+          command: black --check ${LINT_FILES}
+
+      - run:
+          name: codespell
+          command: codespell -I .codespell.skip --skip='*.pyc' ${LINT_FILES}
+
+      - run:
+          name: pytype
+          command: pytype ${TYPECHECK_FILES}
+
+  # `unit-test` runs the unit tests in `tests/`.
+  unit-test:
+    executor: unit-test
+    steps:
+      - dependencies
+
+      # Running out of memory is a common cause of spurious test failures.
+      # In particular, the CI machines have less memory than most workstations.
+      # So tests can pass locally but fail on CI. Record memory and other resource
+      # usage over time to aid with diagnosing these failures.
+      - run:
+          name: Memory Monitor
+          # | is needed for multi-line values in YAML
+          command: |
+            mkdir /tmp/resource-usage
+            export FILE=/tmp/resource-usage/memory.txt
+            while true; do
+              ps -u root eo pid,%cpu,%mem,args,uname --sort=-%mem >> $FILE
+              echo "----------" >> $FILE
+              sleep 1
+            done
+          background: true
+
+      # Run the unit tests themselves
+      - run:
+          name: run tests
+          command: |
+            # pytest arguments:
+            # --cov specifies which directories to report code coverage for
+            # Since we test the installed `rvs`, our source files live in `venv`, not in `src/rvs`.
+            # --junitxml records test results in JUnit format. We upload this file using `store_test_results`
+            # later, and CircleCI then parses this to pretty-print results.
+            # -n uses `pytest-xdist` to parallelize tests within a single instance.
+            pytest --cov=opt/conda/lib/python3.7/site-packages/rvs --cov=tests \
+                   --junitxml=/tmp/test-reports/junit.xml -n ${NUM_CPUS} -vv tests/
+            # Following two lines rewrite paths from venv/ to src/, based on `coverage:paths` in `setup.cfg`
+            # This is needed to avoid confusing Codecov
+            mv .coverage .coverage.bench
+            coverage combine
+      - codecov/upload
+
+      # Upload the test results and resource usage to CircleCI
+      - store_artifacts:
+          path: /tmp/test-reports
+          destination: test-reports
+      - store_artifacts:
+          path: /tmp/resource-usage
+          destination: resource-usage
+      # store_test_results uploads the files and tells CircleCI that it should parse them as test results
+      - store_test_results:
+          path: /tmp/test-reports
+
+# Workflows specify what jobs to actually run on CircleCI. If we didn't specify this,
+# nothing would run! Here we have just a single workflow, `test`, containing both the
+# jobs defined above. By default, the jobs all run in parallel. We can make them run
+# sequentially, or have more complex dependency structures, using the `require` command;
+# see https://circleci.com/docs/2.0/workflows/
+workflows:
+  version: 2
+  test:
+    jobs:
+      - lintandtype
+      - unit-test
