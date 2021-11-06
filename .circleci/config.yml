@@ -100,7 +100,7 @@ jobs:
             # -n uses `pytest-xdist` to parallelize tests within a single instance.
             pytest --cov=opt/conda/lib/python3.7/site-packages/rvs --cov=tests \
                    --junitxml=/tmp/test-reports/junit.xml -n ${NUM_CPUS} -vv tests/
-            # Following two lines rewrite paths from venv/ to src/, based on `coverage:paths` in `setup.cfg`
+            # Following two lines rewrite paths from conda lib to src/, based on `coverage:paths` in `setup.cfg`
             # This is needed to avoid confusing Codecov
             mv .coverage .coverage.bench
             coverage combine

@@ -6,6 +6,8 @@ import src.rvs  # pytype: disable=import-error
 
 TESTS_REQUIRE = [
     "black",
+    "coverage",
+    "codecov",
     "codespell",
     "darglint",
     "flake8",
@@ -15,7 +17,10 @@ TESTS_REQUIRE = [
     "flake8-debugger",
     "flake8-docstrings",
     "flake8-isort",
+    "isort",
     "pytest",
+    "pytest-cov",
+    "pytest-xdist",
     "pytype",
 ]
 
@@ -41,12 +46,11 @@ setuptools.setup(
     package_dir={"": "src"},
     install_requires=[
         "configargparse",
-        "d4rl @ git+ssh://git@github.com/rail-berkeley/d4rl.git",
-        "dm_control<=0.0.4",  # so that dm_control uses mujoco200 along with mujoco_py
+        # unpin d4rl commit after d4rl's installation is fixed w.r.t. Mujoco 2.1 upgrade
+        "d4rl @ git+ssh://git@github.com/rail-berkeley/d4rl.git@11019005e7360478dbafb73b5963325880db1868",  # noqa: E501
         "gcsl @ git+ssh://git@github.com/scottemmons/gcsl.git",
         "gym",
         "matplotlib",
-        "mujoco_py",
         "numpy",
         "pandas",
         "pytorch-lightning",
