@@ -47,8 +47,8 @@ setuptools.setup(
     install_requires=[
         "configargparse",
         # unpin d4rl commit after d4rl's installation is fixed w.r.t. Mujoco 2.1 upgrade
-        "d4rl @ git+ssh://git@github.com/rail-berkeley/d4rl.git@11019005e7360478dbafb73b5963325880db1868",  # noqa: E501
-        "gcsl @ git+ssh://git@github.com/scottemmons/gcsl.git",
+        "d4rl @ git+https://github.com/rail-berkeley/d4rl.git@11019005e7360478dbafb73b5963325880db1868",  # noqa: E501
+        "gcsl @ git+https://github.com/scottemmons/gcsl.git",
         "gym",
         "matplotlib",
         "numpy",
