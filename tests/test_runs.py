@@ -1,5 +1,6 @@
 """Smoke tests for training runs."""
 
+import os
 import subprocess
 
 import pytest
@@ -29,10 +30,10 @@ kitchen_command = [
     "1",
     "--depth",
     "2",
-    "--analyzed4rl",
+    "--analyze_d4rl",
     "--trajectory_samples",
     "2",
-    "--d4rlanalysis",
+    "--d4rl_analysis",
     "kitchen_subtasks",
 ]
 gym_command = [
@@ -61,7 +62,7 @@ gym_command = [
     "1",
     "--depth",
     "2",
-    "--analyzed4rl",
+    "--analyze_d4rl",
     "--trajectory_samples",
     "2",
 ]
@@ -90,7 +91,7 @@ antmaze_command = [
     "1",
     "--depth",
     "2",
-    "--analyzed4rl",
+    "--analyze_d4rl",
     "--trajectory_samples",
     "2",
 ]
@@ -130,22 +131,26 @@ lunar_command = [
 @pytest.mark.expensive
 def test_kitchen_run():
     """Check that a D4RL kitchen run completes with no errors."""
+    os.environ["WANDB_MODE"] = "offline"
     subprocess.run(kitchen_command, check=True)
 
 
 @pytest.mark.expensive
 def test_gym_run():
     """Check that a D4RL gym run completes with no errors."""
+    os.environ["WANDB_MODE"] = "offline"
     subprocess.run(gym_command, check=True)
 
 
 @pytest.mark.expensive
 def test_antmaze_run():
     """Check that a D4RL antmaze run completes with no errors."""
+    os.environ["WANDB_MODE"] = "offline"
     subprocess.run(antmaze_command, check=True)
 
 
 @pytest.mark.expensive
 def test_gcsl_run():
     """Check that a GCSL lunar run completes with no errors."""
+    os.environ["WANDB_MODE"] = "offline"
     subprocess.run(lunar_command, check=True)

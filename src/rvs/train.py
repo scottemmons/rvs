@@ -429,12 +429,12 @@ if __name__ == "__main__":
             if args.trajectory_samples is None
             else args.trajectory_samples,
         )
-    if args.analyzed4rl:
+    if args.analyze_d4rl:
         analyze_d4rl.analyze_performance(
             wandb_logger.experiment.dir,
             device,
             wandb_run=wandb_logger.experiment,
-            analysis=args.d4rlanalysis,
+            analysis=args.d4rl_analysis,
             trajectory_samples=200
             if args.trajectory_samples is None
             else args.trajectory_samples,
