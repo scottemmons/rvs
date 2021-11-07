@@ -12,10 +12,10 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import torch
+import wandb
 from wandb.sdk.wandb_run import Run
 
 from rvs import policies, step, util
-import wandb
 
 
 def save_file_to_wandb(filename: str, wandb_run: Optional[Run] = None) -> None:

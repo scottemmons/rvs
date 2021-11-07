@@ -12,10 +12,10 @@ from d4rl import offline_env
 from gym import spaces
 import numpy as np
 import torch
+import wandb
 from wandb.sdk.wandb_run import Run
 
 from rvs import step, train
-import wandb
 
 
 def configure_gpu(use_gpu: bool, which_gpu: int) -> torch.device:
