@@ -72,6 +72,7 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
   && rm /root/conda.sh
 RUN conda update -n base -c defaults conda \
   && conda install -c anaconda python=3.7 \
+  && conda update pip \
   && conda clean -ay
 
 # Install CUDA for PyTorch
