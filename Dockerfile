@@ -47,6 +47,9 @@ RUN mkdir -p /root/.mujoco \
   && unzip mujoco.zip -d /root/.mujoco \
   && ln -s /root/.mujoco/mujoco200_linux /root/.mujoco/mujoco200 \
   && rm mujoco.zip \
+  && wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz -O mujoco.tar.gz \
+  && tar -zxvf mujoco.tar.gz --no-same-owner --directory /root/.mujoco \
+  && rm mujoco.tar.gz \
   && wget https://roboti.us/file/mjkey.txt -O /root/.mujoco/mjkey.txt
 ENV LD_LIBRARY_PATH /root/.mujoco/mujoco200/bin:${LD_LIBRARY_PATH}
 
