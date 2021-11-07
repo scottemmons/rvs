@@ -55,7 +55,7 @@ setuptools.setup(
         "pandas",
         "pytorch-lightning",
         "seaborn",
-        "stable-baselines3",
+        "stable-baselines3<=1.2.0",  # we use ActorCriticPolicy's _get_latent function
         "torch<=1.7.1",  # gcsl's rlutil breaks with torch==1.8.1
         "tqdm",
         "wandb",
