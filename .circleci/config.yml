@@ -59,7 +59,7 @@ jobs:
 
       - run:
           name: codespell
-          command: codespell -I .codespell.skip --skip='*.pyc' ${LINT_FILES}
+          command: codespell --skip='*.pyc' ${LINT_FILES}
 
       - run:
           name: pytype
