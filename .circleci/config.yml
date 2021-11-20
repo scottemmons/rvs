@@ -98,7 +98,7 @@ jobs:
             # --junitxml records test results in JUnit format. We upload this file using `store_test_results`
             # later, and CircleCI then parses this to pretty-print results.
             # -n uses `pytest-xdist` to parallelize tests within a single instance.
-            pytest --cov=opt/conda/lib/python3.7/site-packages/rvs --cov=tests \
+            pytest --cov=/opt/conda/lib/python3.7/site-packages/rvs --cov=tests \
                    --junitxml=/tmp/test-reports/junit.xml -n ${NUM_CPUS} -vv tests/
             # Following two lines rewrite paths from conda lib to src/, based on `coverage:paths` in `setup.cfg`
             # This is needed to avoid confusing Codecov
