@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/scottemmons/rvs/tree/main.svg?style=svg)](https://circleci.com/gh/scottemmons/rvs/tree/main)
+[![codecov](https://codecov.io/gh/scottemmons/rvs/branch/main/graph/badge.svg)](https://codecov.io/gh/scottemmons/rvs)
+
 # Reinforcement Learning via Supervised Learning
 
 # Installation
