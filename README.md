@@ -9,6 +9,7 @@ Run
 ```bash
 pip install -e .
 ```
+in an environment with Python >= 3.7.0, <3.9.
 
 The code depends on MuJoCo 2.0 and MuJoCo 2.1. Here are [instructions for installing MuJoCo 2.0](https://github.com/openai/mujoco-py/tree/4830435a169c1f3e3b5f9b58a7c3d9c39bdf4acb#install-mujoco)
 and [instructions for installing MuJoCo 2.1](https://github.com/openai/mujoco-py/tree/fb4babe73b1ef18b4bea4c6f36f6307e06335a2f#install-mujoco).
@@ -39,4 +40,4 @@ For example, in `src/rvs/dataset.py`, we have a dataset class for the GCSL envir
 a dataset class for RvS-R in D4RL, and a dataset class for RvS-G in D4RL. In particular,
 the `D4RLRvSGDataModule` allows for conditioning on arbitrary dimensions of the goal
 state using the `goal_columns` attribute; for AntMaze, we set `goal_columns` to `(0, 1)`
-to condition only and the x and y coordinates of the goal state.
+to condition only on the x and y coordinates of the goal state.
