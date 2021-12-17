@@ -11,8 +11,8 @@ pip install -e .
 ```
 in an environment with Python >= 3.7.0, <3.9.
 
-The code depends on MuJoCo 2.0 and MuJoCo 2.1. Here are [instructions for installing MuJoCo 2.0](https://github.com/openai/mujoco-py/tree/4830435a169c1f3e3b5f9b58a7c3d9c39bdf4acb#install-mujoco)
-and [instructions for installing MuJoCo 2.1](https://github.com/openai/mujoco-py/tree/fb4babe73b1ef18b4bea4c6f36f6307e06335a2f#install-mujoco).
+The code depends on MuJoCo 2.1.0 (for mujoco-py) and MuJoCo 2.1.1 (for dm-control). Here are [instructions for installing MuJoCo 2.1.0](https://github.com/openai/mujoco-py/tree/fb4babe73b1ef18b4bea4c6f36f6307e06335a2f#install-mujoco)
+and [instructions for installing MuJoCo 2.1.1](https://github.com/deepmind/dm_control/tree/84fc2faa95ca2b354f3274bb3f3e0d29df7fb337#requirements-and-installation).
 
 If you use the provided `Dockerfile`, it will automatically handle the MuJoCo
 dependencies for you. For example:
