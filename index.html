@@ -1,13 +1,52 @@
 <meta charset="utf-8" emacsmode="-*- markdown -*-">
 
-**What is Essential for Offline RL via Supervised Learning?**
+**RvS: What is Essential for Offline RL via Supervised Learning?**
 
 <p><center><a href="http://scottemmons.com/">Scott Emmons</a>, &emsp; <a href="https://ben-eysenbach.github.io/">Benjamin Eysenbach</a>, &emsp; <a href="https://www.kostrikov.xyz/">Ilya Kostrikov</a>, &emsp; <a href="https://people.eecs.berkeley.edu/~svlevine/">Sergey Levine</a></center></p>
 <p><center><b><a href="https://openreview.net/forum?id=S874XAIpkR-">Paper</a>, &emsp; <a href="https://github.com/scottemmons/rvs">Code</a></b></center></p>
 
 *__Abstract__*:
-Offline reinforcement learning (RL) is typically approached with value-based methods that rely on temporal difference (TD) learning. Recent work has reduced the offline RL problem to weighted, filtered, or conditional behavioral cloning problems. The main idea behind these reductions is that data that is suboptimal for one task, such as achieving a certain reward of reaching a certain goal, may nonetheless be useful for learning to solve another task. These methods, which we collectively refer to as reinforcement learning via supervised learning (RvS), involve a number of design decisions, such as policy architectures and how the conditioning variable is constructed. Through extensive experiments, this paper studies the importance of these design decisions. The most important design decisions boil down to carefully choosing model capacity (e.g., via regularization or architecture) and choosing which information to condition on (e.g., goals or rewards). More complex design choices, such as the large sequence models and value-based weighting schemes used in prior work, are often not necessary. Our results show that carefully designed RvS methods can  match or exceed the performance of prior methods across a range of different offline RL benchmarks, including on datasets with little or no optimal data. Our results help to identify the limits of current RvS methods and identify some open problems.
+Recent work has shown that supervised learning alone, without temporal difference (TD)
+learning, can be remarkably effective for offline RL. When does this hold true, and
+which algorithmic components are necessary? Through extensive experiments, we boil
+supervised learning for offline RL down to its essential elements. In every environment
+suite we consider, simply maximizing likelihood with a two-layer feedforward MLP is
+competitive with state-of-the-art results of substantially more complex methods based on
+TD learning or sequence modeling with Transformers. Carefully choosing model capacity
+(e.g., via regularization or architecture) and choosing which information to condition
+on (e.g., goals or rewards) are critical for performance. These insights serve as a
+field guide for practitioners doing Reinforcement Learning via Supervised Learning
+(which we coin <i>RvS learning</i>). They also probe the limits of existing RvS methods,
+which are comparatively weak on random data, and suggest a number of open problems.
 
---------------------------
+
+Summary of Results
+=========================
+
+![](images/d4rl-return.svg)
+In every suite of tasks we consider, either RvS learning conditioned on goals (RvS-G) or
+RvS learning conditioned on rewards (RvS-R) matches or exceeds the performance of
+state-of-the-art methods employing TD learning and Transformer sequence models.
+
+Overview of RvS Learning
+=========================
+![](images/rvs-diagram.png)
+RvS learning casts the problem of offline RL in terms of pure supervised learning. In
+RvS learning conditioned on goals (RvS-G), we condition on a future state to reach. In
+RvS learning conditioned on rewards (RvS-R), we condition on average reward-to-go. At
+training time, we use hindsight relabeling for supervision. At inference time, we can
+condition on an arbitrary future state or reward target value.
+
+Architecture
+=========================
+![](images/rvs-architecture.svg width="100%")
+Striving for simplicity, we just concatenate the current state and desired outcome.
+Then, we use a depth-two MLP to predict actions.
+
+Citation
+=========================
+~~~~~~~
+Coming soon
+~~~~~~~
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
