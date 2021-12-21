@@ -352,10 +352,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    if args.env_name in step.d4rl_antmaze_v0 and args.reward_conditioning:
-        raise NotImplementedError(
-            "Need to call dataset.get_antmaze_timeouts to fix v0 timeouts",
-        )
     if args.unconditional_policy and args.env_name not in step.d4rl_env_names:
         raise NotImplementedError
 
