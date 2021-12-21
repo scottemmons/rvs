@@ -41,3 +41,28 @@ a dataset class for RvS-R in D4RL, and a dataset class for RvS-G in D4RL. In par
 the `D4RLRvSGDataModule` allows for conditioning on arbitrary dimensions of the goal
 state using the `goal_columns` attribute; for AntMaze, we set `goal_columns` to `(0, 1)`
 to condition only on the x and y coordinates of the goal state.
+
+# Baseline Numbers
+
+We replicated CQL using [this codebase](https://github.com/scottemmons/youngs-cql),
+which was recommended to us by the CQL authors. All hyperparameters and logs from our
+replication runs can be viewed at our [CQL-R Weights & Biases project](https://wandb.ai/scottemmons/SimpleSAC--cql).
+
+We replicated Decision Transformer using [our fork](https://github.com/scottemmons/decision-transformer)
+of the author's codebase, which we customized to add CQL. All hyperparameters and logs
+from our replication runs can be viewed at our [DT Weights & Biases project](https://wandb.ai/scottemmons/decision-transformer).
+
+# Citing RvS
+
+To cite RvS, you can use the following BibTeX entry:
+
+```bibtex
+@misc{emmons2021rvs,
+      title={RvS: What is Essential for Offline RL via Supervised Learning?}, 
+      author={Scott Emmons and Benjamin Eysenbach and Ilya Kostrikov and Sergey Levine},
+      year={2021},
+      eprint={2112.10751},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
