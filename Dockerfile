@@ -2,7 +2,7 @@
 # - Update to cuda 11.0
 # - Remove requirements.txt and MineRL installations
 # - Remove X server display configuration
-# - Symlink mujoco200 to mujoco200_linux to work with both mujoco_py and dm_control
+# - Include both mujoco210 and mujoco-2.1.1
 # The Conda bits are based on https://hub.docker.com/r/continuumio/miniconda3/dockerfile
 FROM ubuntu:20.04
 
@@ -42,14 +42,6 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 RUN curl -o /usr/local/bin/patchelf https://s3-us-west-2.amazonaws.com/openai-sci-artifacts/manual-builds/patchelf_0.9_amd64.elf \
   && chmod +x /usr/local/bin/patchelf
 
-# Install mujoco200
-RUN mkdir -p /root/.mujoco \
-  && wget https://www.roboti.us/download/mujoco200_linux.zip -O mujoco.zip \
-  && unzip mujoco.zip -d /root/.mujoco \
-  && ln -s /root/.mujoco/mujoco200_linux /root/.mujoco/mujoco200 \
-  && rm mujoco.zip \
-  && wget https://roboti.us/file/mjkey.txt -O /root/.mujoco/mjkey.txt
-ENV LD_LIBRARY_PATH /root/.mujoco/mujoco200/bin:${LD_LIBRARY_PATH}
 # Install mujoco210
 RUN mkdir -p /root/.mujoco \
   && wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz -O mujoco.tar.gz \
@@ -57,6 +49,13 @@ RUN mkdir -p /root/.mujoco \
   && rm mujoco.tar.gz \
   && wget https://roboti.us/file/mjkey.txt -O /root/.mujoco/mjkey.txt
 ENV LD_LIBRARY_PATH /root/.mujoco/mujoco210/bin:${LD_LIBRARY_PATH}
+# Install mujoco-2.1.1
+RUN mkdir -p /root/.mujoco \
+  && wget https://github.com/deepmind/mujoco/releases/download/2.1.1/mujoco-2.1.1-linux-x86_64.tar.gz -O mujoco.tar.gz \
+  && tar -zxvf mujoco.tar.gz --no-same-owner --directory /root/.mujoco \
+  && rm mujoco.tar.gz \
+  && wget https://roboti.us/file/mjkey.txt -O /root/.mujoco/mjkey.txt
+ENV LD_LIBRARY_PATH /root/.mujoco/mujoco-2.1.1/bin:${LD_LIBRARY_PATH}
 
 # tini is a simple init which is used by the official Conda Dockerfile (among
 # other things). It can do stuff like reap zombie processes & forward signals

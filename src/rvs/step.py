@@ -47,23 +47,14 @@ d4rl_gym = [
     for dataset in d4rl_datasets
     for version in d4rl_versions
 ]
-d4rl_antmaze_v0 = [
-    "antmaze-umaze-v0",
-    "antmaze-umaze-diverse-v0",
-    "antmaze-medium-diverse-v0",
-    "antmaze-medium-play-v0",
-    "antmaze-large-diverse-v0",
-    "antmaze-large-play-v0",
+d4rl_antmaze = [
+    "antmaze-umaze-v2",
+    "antmaze-umaze-diverse-v2",
+    "antmaze-medium-diverse-v2",
+    "antmaze-medium-play-v2",
+    "antmaze-large-diverse-v2",
+    "antmaze-large-play-v2",
 ]
-d4rl_antmaze_v1 = [
-    "antmaze-umaze-v1",
-    "antmaze-umaze-diverse-v1",
-    "antmaze-medium-diverse-v1",
-    "antmaze-medium-play-v1",
-    "antmaze-large-diverse-v1",
-    "antmaze-large-play-v1",
-]
-d4rl_antmaze = d4rl_antmaze_v0 + d4rl_antmaze_v1
 d4rl_franka = ["kitchen-complete-v0", "kitchen-partial-v0", "kitchen-mixed-v0"]
 d4rl_env_names = d4rl_gym + d4rl_antmaze + d4rl_franka
 
@@ -666,7 +657,6 @@ def eval_d4rl_antmaze(
 
     total_reward_vec = []
     for _ in tqdm.trange(trajectory_samples, desc="Sampling trajectory rewards"):
-        env.set_target()  # randomly choose new goal
         total_reward = 0
         observation = env.reset()
         goal = np.array(env.target_goal)

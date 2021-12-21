@@ -8,7 +8,6 @@ import random
 from typing import Dict, Iterator, List, Optional, Tuple, Union
 
 from d4rl import offline_env
-from d4rl.locomotion import ant
 import gym
 import numpy as np
 import pytorch_lightning as pl
@@ -404,37 +403,6 @@ def reward_to_go(dataset: Dict[str, np.ndarray], average: bool = True) -> np.nda
     return avg_reward_to_go if average else cum_reward_to_go
 
 
-def get_antmaze_timeouts(env: ant.AntMazeEnv) -> np.ndarray:
-    """Fix the timeouts in the AntMaze v0 datasets.
-
-    Args:
-        env: The environment for which to fix timeouts.
-
-    Returns:
-        A fixed timeouts array.
-
-    Raises:
-        NotImplementedError: If the env is not an antmaze-v0 training env.
-    """
-    env_name = env.spec.id
-    if env_name in step.d4rl_antmaze_v1:
-        return env.get_dataset()["timeouts"]
-    elif env_name in step.d4rl_antmaze_v0:
-        if env_name == "antmaze-umaze-v0":
-            episode_steps = 701
-            num_episodes = 1427
-        else:
-            episode_steps = 1001
-            num_episodes = 1000
-
-        episode_timeouts = [0] * (episode_steps - 1) + [1]
-        timeouts = np.tile(episode_timeouts, num_episodes)[:1000000]
-
-        return timeouts
-    else:
-        raise NotImplementedError
-
-
 class D4RLTensorDatasetDataModule(AbstractDataModule):
     """Abstract class for D4RL datasets that can be stored as a TensorDataset."""
 
@@ -550,10 +518,10 @@ class D4RLRvSGDataModule(AbstractDataModule):
         dataset = self.env.get_dataset()
         observations = dataset["observations"]
         actions = dataset["actions"]
-        if not step.is_antmaze_env(self.env):
-            dones = np.logical_or(dataset["terminals"], dataset["timeouts"])
+        if step.is_antmaze_env(self.env):
+            dones = dataset["timeouts"]
         else:
-            dones = get_antmaze_timeouts(self.env)
+            dones = np.logical_or(dataset["terminals"], dataset["timeouts"])
 
         train_indices, val_indices = d4rl_trajectory_split(dones, self.val_frac)
 

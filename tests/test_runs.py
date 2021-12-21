@@ -78,7 +78,7 @@ antmaze_command = [
     "--hidden_size",
     "4",
     "--env_name",
-    "antmaze-umaze-diverse-v1",
+    "antmaze-umaze-diverse-v2",
     "--val_frac",
     "0.1",
     "--learning_rate",
