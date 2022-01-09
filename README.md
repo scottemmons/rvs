@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/scottemmons/rvs/tree/main.svg?style=svg)](https://circleci.com/gh/scottemmons/rvs/tree/main)
 [![codecov](https://codecov.io/gh/scottemmons/rvs/branch/main/graph/badge.svg)](https://codecov.io/gh/scottemmons/rvs)
+[![arXiv](https://img.shields.io/badge/arXiv-2112.10751-b31b1b.svg)](https://arxiv.org/abs/2112.10751)
 
 # Reinforcement Learning via Supervised Learning
 
@@ -49,8 +50,8 @@ which was recommended to us by the CQL authors. All hyperparameters and logs fro
 replication runs can be viewed at our [CQL-R Weights & Biases project](https://wandb.ai/scottemmons/SimpleSAC--cql).
 
 We replicated Decision Transformer using [our fork](https://github.com/scottemmons/decision-transformer)
-of the author's codebase, which we customized to add CQL. All hyperparameters and logs
-from our replication runs can be viewed at our [DT Weights & Biases project](https://wandb.ai/scottemmons/decision-transformer).
+of the author's codebase, which we customized to add AntMaze. All hyperparameters and
+logs from our replication runs can be viewed at our [DT Weights & Biases project](https://wandb.ai/scottemmons/decision-transformer).
 
 # Citing RvS
 
