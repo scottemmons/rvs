@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/scottemmons/rvs/tree/main.svg?style=svg)](https://circleci.com/gh/scottemmons/rvs/tree/main)
 [![codecov](https://codecov.io/gh/scottemmons/rvs/branch/main/graph/badge.svg)](https://codecov.io/gh/scottemmons/rvs)
+[![arXiv](https://img.shields.io/badge/arXiv-2112.10751-b31b1b.svg)](https://arxiv.org/abs/2112.10751)
 
 # Reinforcement Learning via Supervised Learning
 
