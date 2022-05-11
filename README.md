@@ -58,12 +58,11 @@ logs from our replication runs can be viewed at our [DT Weights & Biases project
 To cite RvS, you can use the following BibTeX entry:
 
 ```bibtex
-@misc{emmons2021rvs,
-      title={RvS: What is Essential for Offline RL via Supervised Learning?}, 
-      author={Scott Emmons and Benjamin Eysenbach and Ilya Kostrikov and Sergey Levine},
-      year={2021},
-      eprint={2112.10751},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@inproceedings{emmons2022rvs,
+    title={RvS: What is Essential for Offline {RL} via Supervised Learning?},
+    author={Scott Emmons and Benjamin Eysenbach and Ilya Kostrikov and Sergey Levine},
+    booktitle={International Conference on Learning Representations},
+    year={2022},
+    url={https://openreview.net/forum?id=S874XAIpkR-}
 }
 ```
