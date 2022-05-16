@@ -355,7 +355,7 @@ if __name__ == "__main__":
     if args.unconditional_policy and args.env_name not in step.d4rl_env_names:
         raise NotImplementedError
 
-    args.seed = np.random.randint(2 ** 31 - 1) if args.seed is None else args.seed
+    args.seed = np.random.randint(2**31 - 1) if args.seed is None else args.seed
     util.set_seed(args.seed + 1)
     wandb_logger = pl.loggers.wandb.WandbLogger(project=wandb_project)
     log_args(args, wandb_logger)
