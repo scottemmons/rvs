@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 import d4rl  # noqa F401 Import needed to register d4rl envs
 from d4rl import infos, offline_env
@@ -163,30 +163,14 @@ def generate_random_rollouts(
     )
 
 
-def is_d4rl_env_helper(env: gym.Env, base_class: Type) -> bool:
-    """Helper function that determines if `env` is instance of `base_class`."""
-    if isinstance(env, base_class):
-        return True
-    elif hasattr(env, "env"):
-        if isinstance(env.env, base_class):
-            return True
-        elif hasattr(env.env, "env"):
-            if isinstance(env.env.env, base_class):
-                return True
-        elif hasattr(env.env, "_wrapped_env"):
-            if isinstance(env.env._wrapped_env, base_class):
-                return True
-    return False
-
-
 def is_kitchen_env(env: gym.Env) -> bool:
     """Determine if env is a D4RL Franka kichen env."""
-    return is_d4rl_env_helper(env, kitchen_multitask_v0.KitchenTaskRelaxV1)
+    return env.spec.id in d4rl_franka
 
 
 def is_antmaze_env(env: gym.Env) -> bool:
     """Determine if env is a D4RL AntMaze env."""
-    return is_d4rl_env_helper(env, ant.AntMazeEnv)
+    return env.spec.id in d4rl_antmaze
 
 
 def render_env(env: gym.Env, mode="human") -> Union[np.ndarray, None]:
