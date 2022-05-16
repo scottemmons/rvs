@@ -135,7 +135,7 @@ def load_tensor_dataset(rollout_directory: str) -> data.TensorDataset:
 def seed_worker(worker_id: int) -> None:
     """Unique random seed for each parallel data worker to prevent duplicate batches."""
     # torch.initial_seed() is the base torch seed plus a unique offset for each worker
-    worker_seed = torch.initial_seed() % 2 ** 32
+    worker_seed = torch.initial_seed() % 2**32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
 
@@ -270,7 +270,7 @@ class AbstractDataModule(pl.LightningDataModule, ABC):
         self.data_val = None
 
         if seed is None:
-            seed = np.random.randint(2 ** 31 - 1)
+            seed = np.random.randint(2**31 - 1)
         self.generator = torch.Generator()
         self.generator.manual_seed(seed)
 
